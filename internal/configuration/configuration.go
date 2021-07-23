@@ -1,21 +1,18 @@
 package configuration
 
-import (
-	"fmt"
-	"os"
+// These configuration variables are overriden at build time by setting the ldflags.
+var (
+	// these have default values set
+	applicationName = "go-hello-world"
+	description     = "A simple Go Web API application"
+
+	// these default to empty string
+	version       string
+	lastCommitSha string
 )
 
-const (
-	applicationNameEnvironmentVariable = "APPLICATION_NAME"
-	versionEnvironmentVariable         = "VERSION"
-	lastCommitShaEnvironmentVariable   = "LAST_COMMIT_SHA"
-	descriptionEnvironmentVariable     = "DESCRIPTION"
-)
-
-const (
-	environmentErrorString = "environment variable %s not set"
-)
-
+// Expose configuration via this bundle struct.
+// Use Getter methods to ensure fields don't get overriden.
 type Bundle struct {
 	applicationName string
 	version         string
@@ -39,39 +36,11 @@ func (c *Bundle) GetDescription() string {
 	return c.description
 }
 
-func Load() (Bundle, error) {
-	name, err := lookupEnvironmentVariable(applicationNameEnvironmentVariable)
-	if err != nil {
-		return Bundle{}, err
-	}
-
-	sha, err := lookupEnvironmentVariable(lastCommitShaEnvironmentVariable)
-	if err != nil {
-		return Bundle{}, err
-	}
-
-	version, err := lookupEnvironmentVariable(versionEnvironmentVariable)
-	if err != nil {
-		return Bundle{}, err
-	}
-
-	description, err := lookupEnvironmentVariable(descriptionEnvironmentVariable)
-	if err != nil {
-		return Bundle{}, err
-	}
-
+func Load() Bundle {
 	return Bundle{
-		applicationName: name,
+		applicationName: applicationName,
 		version:         version,
-		lastCommitSha:   sha,
+		lastCommitSha:   lastCommitSha,
 		description:     description,
-	}, nil
-}
-
-func lookupEnvironmentVariable(variableName string) (string, error) {
-	value, ok := os.LookupEnv(variableName)
-	if !ok {
-		return "", fmt.Errorf(environmentErrorString, variableName)
 	}
-	return value, nil
 }

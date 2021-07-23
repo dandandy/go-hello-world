@@ -13,13 +13,10 @@ var PORT = ":8080"
 func main() {
 	log.Print("Starting server...")
 
-	config, err := configuration.Load()
-	if err != nil {
-		log.Fatalf("failed to start with error %s", err)
-	}
+	config := configuration.Load()
 
 	serveMux := http.NewServeMux()
-	err = handlers.Add(config, serveMux)
+	err := handlers.Add(config, serveMux)
 	if err != nil {
 		log.Fatalf("failed to start with error %s", err)
 	}

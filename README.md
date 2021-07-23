@@ -50,19 +50,6 @@ docker build .
 
 ***
 
-## Environment Variables
-
-The application requires the following environment variables to be set in order for it to start:
-
-- APPLICATION_NAME
-- VERSION
-- LAST_COMMIT_SHA
-- DESCRIPTION
-
-Any valid string is acceptable for these variables.
-
-***
-
 ## Endpoints
 
 This application supports the following endpoints.
@@ -99,10 +86,10 @@ Body:
 
 ```json
 {
-    "name":"foo",
-    "version":"1.0.0",
-    "lastCommitSha":"abcd1234",
-    "description":"Simple Go Web API Application"
+    "name":"go-hello-world",
+    "version":"v1.0.0",
+    "lastCommitSha":"dfc20f365734a26dfa9afa7a90edd92a8ec88a57",
+    "description":"A simple Go Web API application"
 }
 ```
 
@@ -112,8 +99,8 @@ Body:
 
 This application has the following risks:
 
-- If any of the required environment variables are not set it will not start. It is intentionally designed to fail fast, however it instead could be designed to ignore any missing environment variables since usually metadata is not strictly required to run workloads or it could bake in these environment variables into the docker container at build time. It appears that Github Actions does not support Docker build arguments so I decided not to pursue this feature https://github.community/t/feature-request-build-args-support-in-docker-container-actions/16846/7 .
-
 - The health check endpoint doesn't actually do anything. Ideally a health check endpoint would check downstream services are available. This provides an interface to do that, but it doesn't actually check anything.
 
 - The current CI setup does not contain a versioning scheme. This makes it difficult to map code commits to artifact versions when diagnosing issues. Whilst the metadata endpoint somewhat helps in this matter, you still have to go to the trouble to start the application to find the commit sha.
+
+- From a security standpoint, someone could tamper with the container by swapping out the binary for a mallicious one. To detect if this has occured could take a HASH of the final image at build time to give us the ability to detect if it has been tampered with.

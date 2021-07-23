@@ -3,9 +3,14 @@ FROM golang:1.16-alpine AS build
 WORKDIR /build
 COPY . .
 
+# TEST
 ENV CGO_ENABLED 0
 RUN go test -cover ./...
-RUN go build
+
+# BUILD
+RUN apk add git
+RUN go build -ldflags="-X github.com/dandandy/go-hello-world/internal/configuration.lastCommitSha=$(git rev-list -1 HEAD)\
+    -X github.com/dandandy/go-hello-world/internal/configuration.version=$(git tag)"
 
 FROM scratch
 
