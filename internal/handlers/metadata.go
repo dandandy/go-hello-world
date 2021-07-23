@@ -23,7 +23,7 @@ type metadataResponseBody struct {
 func Metadata(c configuration.Bundle) (func(http.ResponseWriter, *http.Request), error) {
 	response := metadataResponseBody{
 		ApplicationName: c.GetApplicationName(),
-		Version:         c.GetLastCommitSha(),
+		Version:         c.GetVersion(),
 		LastCommitSha:   c.GetLastCommitSha(),
 		Description:     c.GetDescription(),
 	}
