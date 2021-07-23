@@ -13,28 +13,28 @@ var PORT = ":8080"
 func main() {
 	log.Print("Starting server...")
 
-	err := addHandlers()
+	serveMux := http.NewServeMux()
+	err := addHandlers(serveMux)
 	if err != nil {
 		log.Fatalf("failed to start with error %s", err)
 	}
 
 	log.Printf("listening on port %s", PORT)
-	log.Fatal(http.ListenAndServe(PORT, nil))
+	log.Fatal(http.ListenAndServe(PORT, serveMux))
 }
 
-func addHandlers() error {
+func addHandlers(serveMux *http.ServeMux) error {
 	config, err := configuration.Load()
 	if err != nil {
 		return err
 	}
 
-	metadataHandler, err := handlers.Metadata(config)
+	err = handlers.AddMetadataHandler(config, serveMux)
 	if err != nil {
 		return err
 	}
 
-	http.HandleFunc(handlers.MetadataPath, metadataHandler)
-	http.HandleFunc(handlers.HelloWorldPath, handlers.HelloWorld)
-	http.HandleFunc(handlers.HealthCheckPath, handlers.HealthCheck)
+	handlers.AddHelloWorldHandler(serveMux)
+	handlers.AddHealthCheckHandler(serveMux)
 	return nil
 }

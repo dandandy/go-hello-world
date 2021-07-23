@@ -7,9 +7,9 @@ import (
 	"github.com/dandandy/go-hello-world/internal/configuration"
 )
 
-const MetadataPath = "/metadata"
+const metadataPath = "/metadata"
 
-type metadata struct {
+type metadataResponse struct {
 	response []byte
 }
 
@@ -20,7 +20,16 @@ type metadataResponseBody struct {
 	Description     string `json:"description"`
 }
 
-func Metadata(c configuration.Bundle) (func(http.ResponseWriter, *http.Request), error) {
+func AddMetadataHandler(c configuration.Bundle, s *http.ServeMux) error {
+	handler, err := newMetadataHandler(c)
+	if err != nil {
+		return err
+	}
+	s.HandleFunc(metadataPath, handler)
+	return nil
+}
+
+func newMetadataHandler(c configuration.Bundle) (func(http.ResponseWriter, *http.Request), error) {
 	response := metadataResponseBody{
 		ApplicationName: c.GetApplicationName(),
 		Version:         c.GetVersion(),
@@ -33,16 +42,16 @@ func Metadata(c configuration.Bundle) (func(http.ResponseWriter, *http.Request),
 		return nil, err
 	}
 
-	return metadata{
+	return metadataResponse{
 		response: responseJson,
-	}.Handler, nil
+	}.handler, nil
 }
 
 func (m *metadataResponseBody) toJson() ([]byte, error) {
 	return json.Marshal(m)
 }
 
-func (m metadata) Handler(rw http.ResponseWriter, req *http.Request) {
+func (m metadataResponse) handler(rw http.ResponseWriter, req *http.Request) {
 	contentTypeApplicationJson(rw.Header())
 	rw.WriteHeader(200)
 	rw.Write(m.response)

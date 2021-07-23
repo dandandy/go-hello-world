@@ -7,13 +7,13 @@ import (
 )
 
 func TestHealthCheck(t *testing.T) {
-	req, err := http.NewRequest(http.MethodGet, HealthCheckPath, nil)
+	req, err := http.NewRequest(http.MethodGet, healthCheckPath, nil)
 	if err != nil {
 		t.Error(err)
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(HealthCheck)
+	handler := http.HandlerFunc(healthCheck)
 
 	handler.ServeHTTP(rr, req)
 

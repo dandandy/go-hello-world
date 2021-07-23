@@ -11,7 +11,7 @@ import (
 func TestMetadata(t *testing.T) {
 	t.Run("does not throw an error", func(t *testing.T) {
 		wantErr := false
-		got, err := Metadata(configuration.Bundle{})
+		got, err := newMetadataHandler(configuration.Bundle{})
 		if (err != nil) != wantErr {
 			t.Errorf("Metadata() error = %v, wantErr %v", err, wantErr)
 			return
@@ -25,15 +25,15 @@ func TestMetadata(t *testing.T) {
 }
 
 func Test_metadata_Handler(t *testing.T) {
-	req, err := http.NewRequest(http.MethodGet, MetadataPath, nil)
+	req, err := http.NewRequest(http.MethodGet, metadataPath, nil)
 	if err != nil {
 		t.Error(err)
 	}
 
-	m := metadata{
+	m := metadataResponse{
 		response: []byte(`foo`),
 	}
-	handler := http.HandlerFunc(m.Handler)
+	handler := http.HandlerFunc(m.handler)
 	rr := httptest.NewRecorder()
 
 	handler.ServeHTTP(rr, req)

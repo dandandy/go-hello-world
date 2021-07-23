@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-const HealthCheckPath = "/health"
+const healthCheckPath = "/health"
 
 type healthCheckResponse struct {
 	Healthy      bool         `json:"healthy"`
@@ -17,8 +17,12 @@ type dependency struct {
 	Healthy bool   `json:"healthy"`
 }
 
+func AddHealthCheckHandler(s *http.ServeMux) {
+	s.HandleFunc(healthCheckPath, healthCheck)
+}
+
 // Lightweight endpoint to show that the application is alive and responsive.
-func HealthCheck(rw http.ResponseWriter, req *http.Request) {
+func healthCheck(rw http.ResponseWriter, req *http.Request) {
 	response := healthCheckResponse{
 		Healthy:      true,
 		Dependencies: []dependency{},

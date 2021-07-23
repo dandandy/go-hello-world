@@ -7,13 +7,13 @@ import (
 )
 
 func TestHelloWorld(t *testing.T) {
-	req, err := http.NewRequest(http.MethodGet, HelloWorldPath, nil)
+	req, err := http.NewRequest(http.MethodGet, helloWorldPath, nil)
 	if err != nil {
 		t.Error(err)
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(HelloWorld)
+	handler := http.HandlerFunc(helloWorldHandler)
 
 	handler.ServeHTTP(rr, req)
 
