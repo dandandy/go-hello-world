@@ -21,6 +21,6 @@ func main() {
 		log.Fatalf("failed to start with error %s", err)
 	}
 
-	log.Printf("listening on port %s", PORT)
+	log.Printf("listening on port http://localhost%s", PORT)
 	log.Fatal(http.ListenAndServe(PORT, serveMux))
 }
