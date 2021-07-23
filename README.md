@@ -112,7 +112,7 @@ Body:
 
 This application has the following risks:
 
-- If any of the required environment variables are not set it will not start. It is intentionally designed to fail fast, however it instead could be designed to ignore any missing environment variables since usually metadata is not strictly required to run workloads
+- If any of the required environment variables are not set it will not start. It is intentionally designed to fail fast, however it instead could be designed to ignore any missing environment variables since usually metadata is not strictly required to run workloads or it could bake in these environment variables into the docker container at build time.
 
 - The health check endpoint doesn't actually do anything. Ideally a health check endpoint would check downstream services are available. This provides an interface to do that, but it doesn't actually check anything.
 
