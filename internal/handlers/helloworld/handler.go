@@ -11,6 +11,6 @@ func Add(s *http.ServeMux) {
 }
 
 func handler(rw http.ResponseWriter, req *http.Request) {
-	rw.Write(helloWorld)
 	rw.WriteHeader(200)
+	rw.Write(helloWorld)
 }

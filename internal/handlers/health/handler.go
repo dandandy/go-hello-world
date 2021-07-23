@@ -37,8 +37,8 @@ func handler(rw http.ResponseWriter, req *http.Request) {
 		return
 	}
 	utils.ContentTypeApplicationJson(rw.Header())
-	rw.Write(responseJson)
 	rw.WriteHeader(200)
+	rw.Write(responseJson)
 }
 
 func (h *response) toJson() ([]byte, error) {
