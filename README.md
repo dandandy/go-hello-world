@@ -45,7 +45,13 @@ go run main.go
 All of the above commands are run in multistage the Dockerfile. To build the Dockerfile:
 
 ```bash
-docker build .
+docker build . -t go-hello-world
+```
+
+Then to run it:
+
+```bash
+docker run -p 8080:8080 go-hello-world
 ```
 
 ***
