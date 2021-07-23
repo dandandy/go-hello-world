@@ -10,7 +10,7 @@ RUN go test -cover ./...
 # BUILD
 RUN apk add git
 RUN go build -ldflags="-X github.com/dandandy/go-hello-world/internal/configuration.lastCommitSha=$(git rev-list -1 HEAD)\
-    -X github.com/dandandy/go-hello-world/internal/configuration.version=$(git tag)"
+    -X github.com/dandandy/go-hello-world/internal/configuration.version=$(git describe --tags --abbrev=0)"
 
 FROM scratch
 
