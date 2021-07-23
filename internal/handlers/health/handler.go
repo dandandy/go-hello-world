@@ -1,13 +1,15 @@
-package handlers
+package health
 
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/dandandy/go-hello-world/internal/utils"
 )
 
-const healthCheckPath = "/health"
+const path = "/health"
 
-type healthCheckResponse struct {
+type response struct {
 	Healthy      bool         `json:"healthy"`
 	Dependencies []dependency `json:"dependencies"`
 }
@@ -17,28 +19,28 @@ type dependency struct {
 	Healthy bool   `json:"healthy"`
 }
 
-func AddHealthCheckHandler(s *http.ServeMux) {
-	s.HandleFunc(healthCheckPath, healthCheck)
+func Add(s *http.ServeMux) {
+	s.HandleFunc(path, handler)
 }
 
 // Lightweight endpoint to show that the application is alive and responsive.
-func healthCheck(rw http.ResponseWriter, req *http.Request) {
-	response := healthCheckResponse{
+func handler(rw http.ResponseWriter, req *http.Request) {
+	resp := response{
 		Healthy:      true,
 		Dependencies: []dependency{},
 	}
 
-	responseJson, err := response.toJson()
+	responseJson, err := resp.toJson()
 	if err != nil {
 		rw.Write([]byte(`something went wrong`))
 		rw.WriteHeader(500)
 		return
 	}
-	contentTypeApplicationJson(rw.Header())
+	utils.ContentTypeApplicationJson(rw.Header())
 	rw.Write(responseJson)
 	rw.WriteHeader(200)
 }
 
-func (h *healthCheckResponse) toJson() ([]byte, error) {
+func (h *response) toJson() ([]byte, error) {
 	return json.Marshal(h)
 }

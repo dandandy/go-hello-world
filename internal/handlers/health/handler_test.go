@@ -1,21 +1,23 @@
-package handlers
+package health
 
 import (
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/dandandy/go-hello-world/internal/utils"
 )
 
 func TestHealthCheck(t *testing.T) {
-	req, err := http.NewRequest(http.MethodGet, healthCheckPath, nil)
+	req, err := http.NewRequest(http.MethodGet, path, nil)
 	if err != nil {
 		t.Error(err)
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(healthCheck)
+	h := http.HandlerFunc(handler)
 
-	handler.ServeHTTP(rr, req)
+	h.ServeHTTP(rr, req)
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
@@ -28,8 +30,8 @@ func TestHealthCheck(t *testing.T) {
 			rr.Body.String(), expected)
 	}
 
-	if rr.Header().Get(contentType) != applicationJson {
+	if rr.Header().Get(utils.ContentType) != utils.ApplicationJson {
 		t.Errorf("handler returned unexpected content type: got %v want %v",
-			rr.Header().Get(contentType), applicationJson)
+			rr.Header().Get(utils.ContentType), utils.ApplicationJson)
 	}
 }

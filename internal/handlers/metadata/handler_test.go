@@ -1,4 +1,4 @@
-package handlers
+package metadata
 
 import (
 	"net/http"
@@ -6,12 +6,13 @@ import (
 	"testing"
 
 	"github.com/dandandy/go-hello-world/internal/configuration"
+	"github.com/dandandy/go-hello-world/internal/utils"
 )
 
 func TestMetadata(t *testing.T) {
 	t.Run("does not throw an error", func(t *testing.T) {
 		wantErr := false
-		got, err := newMetadataHandler(configuration.Bundle{})
+		got, err := newHandler(configuration.Bundle{})
 		if (err != nil) != wantErr {
 			t.Errorf("Metadata() error = %v, wantErr %v", err, wantErr)
 			return
@@ -25,12 +26,12 @@ func TestMetadata(t *testing.T) {
 }
 
 func Test_metadata_Handler(t *testing.T) {
-	req, err := http.NewRequest(http.MethodGet, metadataPath, nil)
+	req, err := http.NewRequest(http.MethodGet, path, nil)
 	if err != nil {
 		t.Error(err)
 	}
 
-	m := metadataResponse{
+	m := response{
 		response: []byte(`foo`),
 	}
 	handler := http.HandlerFunc(m.handler)
@@ -49,8 +50,8 @@ func Test_metadata_Handler(t *testing.T) {
 			rr.Body.String(), expected)
 	}
 
-	if rr.Header().Get(contentType) != applicationJson {
+	if rr.Header().Get(utils.ContentType) != utils.ApplicationJson {
 		t.Errorf("handler returned unexpected content type: got %v want %v",
-			rr.Header().Get(contentType), applicationJson)
+			rr.Header().Get(utils.ContentType), utils.ApplicationJson)
 	}
 }

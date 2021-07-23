@@ -1,4 +1,4 @@
-package handlers
+package helloworld
 
 import (
 	"net/http"
@@ -7,15 +7,15 @@ import (
 )
 
 func TestHelloWorld(t *testing.T) {
-	req, err := http.NewRequest(http.MethodGet, helloWorldPath, nil)
+	req, err := http.NewRequest(http.MethodGet, path, nil)
 	if err != nil {
 		t.Error(err)
 	}
 
 	rr := httptest.NewRecorder()
-	handler := http.HandlerFunc(helloWorldHandler)
+	h := http.HandlerFunc(handler)
 
-	handler.ServeHTTP(rr, req)
+	h.ServeHTTP(rr, req)
 
 	if status := rr.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v want %v",
