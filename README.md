@@ -1,7 +1,7 @@
 # Simple Go Web API Application
 
 
-This repo contains a simple Web API Application written in Go. Due to the simplicity of the challenge I have decided to not use any frameworks and instead only use the default library.
+This repo contains a simple Web API Application written in Go. I decided to not use any frameworks and instead only use the default library since I felt that frameworks are overkill for these endpoints.
 
 This project was built using Go 1.16 but should work with most versions.
 
