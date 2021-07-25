@@ -107,6 +107,6 @@ This application has the following risks:
 
 - The health check endpoint doesn't actually do anything. Ideally a health check endpoint would check downstream services are available. This provides an interface to do that, but it doesn't actually check anything.
 
-- The current CI setup does not contain a versioning scheme. This makes it difficult to map code commits to artifact versions when diagnosing issues. Whilst the metadata endpoint somewhat helps in this matter, you still have to go to the trouble to start the application to find the commit sha.
+- The current CI setup does not contain an automatic versioning scheme, instead it relies on developers to push a git tag. This means that developers may forget to update the versions.
 
 - From a security standpoint, someone could tamper with the container by swapping out the binary for a mallicious one. To detect if this has occured could take a HASH of the final image at build time to give us the ability to detect if it has been tampered with.
