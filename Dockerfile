@@ -2,9 +2,14 @@ FROM golang:1.16-alpine AS build
 
 WORKDIR /build
 COPY . .
+# Required for golangci-lint and go test
+ENV CGO_ENABLED 0
+
+# LINT
+COPY --from=golangci/golangci-lint /usr/bin/golangci-lint /usr/bin/golangci-lint
+RUN /usr/bin/golangci-lint run
 
 # TEST
-ENV CGO_ENABLED 0
 RUN go test -cover ./...
 
 # BUILD
