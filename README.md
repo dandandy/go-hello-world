@@ -117,3 +117,5 @@ This application has the following risks:
 - The current CI setup does not contain an automatic versioning scheme, instead it relies on developers to push a git tag. This means that developers may forget to update the versions.
 
 - From a security standpoint, someone could tamper with the container by swapping out the binary for a mallicious one. To detect if this has occured could take a HASH of the final image at build time to give us the ability to detect if it has been tampered with.
+
+- The Go handlers do not check the HTTP request method. This means that they respond to all different types of request methods with the same response. We could fix this by checking the HTTP request method in the handlers, or using a library like [Gorrila Mux](https://github.com/gorilla/mux).
