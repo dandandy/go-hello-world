@@ -35,3 +35,27 @@ func TestHealthCheck(t *testing.T) {
 			rr.Header().Get(utils.ContentType), utils.ApplicationJson)
 	}
 }
+
+func TestAdd(t *testing.T) {
+	t.Run("it handles requests to path when handler added to serve mux", func(t *testing.T) {
+		serveMux := http.NewServeMux()
+		respRec := httptest.NewRecorder()
+		req, err := http.NewRequest("GET", path, nil)
+		if err != nil {
+			t.Error("Creating request failed")
+		}
+
+		Add(serveMux)
+		serveMux.ServeHTTP(respRec, req)
+
+		expectedStatusCode := 200
+		if got := respRec.Code; got != expectedStatusCode {
+			t.Errorf("expected %v, got %v", expectedStatusCode, got)
+		}
+
+		expectedBody := `{"healthy":true,"dependencies":[]}`
+		if got := respRec.Body.String(); got != expectedBody {
+			t.Errorf("expected %v, got %v", expectedBody, got)
+		}
+	})
+}
