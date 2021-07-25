@@ -55,5 +55,9 @@ func (m *responseJsonBody) toJson() ([]byte, error) {
 func (m response) handler(rw http.ResponseWriter, req *http.Request) {
 	utils.ContentTypeApplicationJson(rw.Header())
 	rw.WriteHeader(200)
-	rw.Write(m.response)
+	_, err := rw.Write(m.response)
+	if err != nil {
+		utils.InternalServerErrorResponse(rw)
+		return
+	}
 }

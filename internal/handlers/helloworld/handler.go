@@ -1,6 +1,10 @@
 package helloworld
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/dandandy/go-hello-world/internal/utils"
+)
 
 const path = "/"
 
@@ -12,5 +16,9 @@ func Add(s *http.ServeMux) {
 
 func handler(rw http.ResponseWriter, req *http.Request) {
 	rw.WriteHeader(200)
-	rw.Write(helloWorld)
+	_, err := rw.Write(helloWorld)
+	if err != nil {
+		utils.InternalServerErrorResponse(rw)
+		return
+	}
 }

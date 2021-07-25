@@ -32,13 +32,16 @@ func handler(rw http.ResponseWriter, req *http.Request) {
 
 	responseJson, err := resp.toJson()
 	if err != nil {
-		rw.Write([]byte(`something went wrong`))
-		rw.WriteHeader(500)
+		utils.InternalServerErrorResponse(rw)
 		return
 	}
 	utils.ContentTypeApplicationJson(rw.Header())
 	rw.WriteHeader(200)
-	rw.Write(responseJson)
+	_, err = rw.Write(responseJson)
+	if err != nil {
+		utils.InternalServerErrorResponse(rw)
+		return
+	}
 }
 
 func (h *response) toJson() ([]byte, error) {

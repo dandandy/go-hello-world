@@ -66,7 +66,11 @@ func TestAdd(t *testing.T) {
 			t.Error("Creating request failed")
 		}
 
-		Add(config, serveMux)
+		wantErr := false
+		err = Add(config, serveMux)
+		if (err != nil) != wantErr {
+			t.Errorf("Add() = err %v wantErr = %v", err, wantErr)
+		}
 		serveMux.ServeHTTP(respRec, req)
 
 		expectedStatusCode := 200
