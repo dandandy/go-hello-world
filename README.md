@@ -13,30 +13,37 @@ The following tools should be installed on the system
 
 - Go 1.16
 - Docker
+- [Golangci-lint](https://github.com/golangci/golangci-lint)
 
 ***
 
 ## How to build, test and run the application
 
-The following shell command is used to build the project:
+To lint the project:
+
+```bash
+golangci-lint run
+```
+
+To build the project:
 
 ```bash
 go build
 ```
 
-The following shell command is used to run the unit test suite with unit test coverage:
+To run the unit test suite with unit test coverage:
 
 ```bash
 go test -cover ./...
 ```
 
-The following shell command is used to run the application binary:
+To run the application binary:
 
 ```bash
 ./go-hello-world
 ```
 
-Alternatively to run the application without building it first:
+Alternatively, to run the application without building it first:
 
 ```bash
 go run main.go
